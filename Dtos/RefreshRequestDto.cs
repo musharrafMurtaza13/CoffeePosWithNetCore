@@ -1,0 +1,1 @@
+public record RefreshRequestDto(string RefreshToken);
