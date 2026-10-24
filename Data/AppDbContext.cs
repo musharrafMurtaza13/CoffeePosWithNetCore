@@ -1,4 +1,4 @@
-// Data/AppDbContext.cs
+﻿// Data/AppDbContext.cs
 using CoffeePos.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +29,7 @@ namespace CoffeePos.Data
             modelBuilder.Entity<RefreshToken>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd(); //  Add this line!
                 entity.Property(e => e.Token).IsRequired();
 
                 entity.HasOne(e => e.User)
@@ -47,14 +48,14 @@ namespace CoffeePos.Data
                 {
                     Id = adminId,
                     Username = "admin",
-                    PasswordHash = "$2a$11$XJzW1K7x5Y7K4x0q0v0UhuOQ7uE8w7g0s7Q6R5S4T3U2V1W0X9Y8Z", // SecretPassword123
+                    PasswordHash = "$2a$11$vK3i..drdNMr9zlENu4pwu/mB0Ea9ZuxHDCEbRlf3cKK5qoQtCPTC", // SecretPassword123
                     Role = "Admin"
                 },
                 new ApplicationUser
                 {
                     Id = cashierId,
                     Username = "cashier_ali",
-                    PasswordHash = "$2a$11$XJzW1K7x5Y7K4x0q0v0UhuOQ7uE8w7g0s7Q6R5S4T3U2V1W0X9Y8Z", // SecretPassword123
+                    PasswordHash = "$2a$11$vK3i..drdNMr9zlENu4pwu/mB0Ea9ZuxHDCEbRlf3cKK5qoQtCPTC", // SecretPassword123
                     Role = "Cashier"
                 }
             );

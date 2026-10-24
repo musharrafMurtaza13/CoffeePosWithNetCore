@@ -1,4 +1,5 @@
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -34,6 +35,12 @@ namespace CoffeePos.Services
                 .Include(u => u.RefreshTokens)
                 .FirstOrDefaultAsync(u => u.Username == request.Username);
 
+            
+            
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword("SecretPassword123");
+                 Console.WriteLine(hashedPassword);
+            
+
             // Password verify karo (BCrypt ke zariye)
             if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
                 return null;
@@ -43,6 +50,8 @@ namespace CoffeePos.Services
             var refreshToken = GenerateRefreshToken(user.Id);
 
             user.RefreshTokens.Add(refreshToken);
+            _db.Entry(refreshToken).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+
             await _db.SaveChangesAsync();
 
             return new AuthResponseDto(accessToken, refreshToken.Token, refreshToken.ExpiresAt);
@@ -105,6 +114,7 @@ namespace CoffeePos.Services
 
             return new RefreshToken
             {
+                Id = Guid.NewGuid(), //  Yeh line add karna lazmi hai agar Id Guid hai!
                 Token = Convert.ToBase64String(randomNumber),
                 ExpiresAt = DateTime.UtcNow.AddDays(7), // Long-lived Refresh Token (7 days)
                 UserId = userId

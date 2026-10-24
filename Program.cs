@@ -56,10 +56,11 @@ if (app.Environment.IsDevelopment())
 
     // 3. Map Scalar API Reference UI
     // 2. Scalar ko exact pattern batayein
-    app.MapScalarApiReference(options =>
-    {
-        options.WithOpenApiRoutePattern("/openapi/{documentName}.json");
-    });
+    app.MapScalarApiReference();
+    //app.MapScalarApiReference(options =>
+    //{
+    //    options.WithOpenApiRoutePattern("/openapi/{documentName}.json");
+    //});
     // This will host the interactive documentation at: https://localhost:<port>/scalar
     app.UseDeveloperExceptionPage();
 }
